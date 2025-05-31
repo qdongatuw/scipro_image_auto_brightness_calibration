@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import filedialog
 import tifffile as tiff
 import numpy as np
-
+from tqdm import tqdm
 
 
 root = tk.Tk()
@@ -15,15 +15,15 @@ file_paths = []
 
 for root_dir, dirs, files in os.walk(selected_folder):
     for file in files:
-        if file.lower().endswith('.tif'):
+        if file.lower().endswith('.tif') and 'enhanced' not in file.lower():
             file_paths.append(os.path.join(root_dir, file))
 
 total_num = len(file_paths)
 
 cnt = 0
-for file in file_paths:
+for file in tqdm(file_paths):
     cnt += 1
-    print(f'Proseeing {os.path.basename(file)} : {cnt}/{total_num}')
+    # tqdm.write(f'Proseeing {os.path.basename(file)} : {cnt}/{total_num}')
 
     output_file = f'{os.path.splitext(file)[0]}_enhanced.tif'
     im = tiff.imread(file)
